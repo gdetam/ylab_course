@@ -6,7 +6,8 @@ hw_01 task_01.
 
 
 def domain_name(url: str) -> str:
-    url = url.replace('//www.', '.').replace('//', '.').split('.')[1]
+    url = url.replace('http://', '', 1).replace('https://', '', 1).replace('www.', '', 1)
+    url = url.split('.')[0]
     return url
 
 

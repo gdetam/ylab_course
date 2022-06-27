@@ -10,7 +10,7 @@
 ```commandline
 
 ├── ylab_course/
-│   ├── hw_01/│   
+│   ├── hw_01/   
 │       ├── task_01.py
 │       ├── task_02.py
 │       ├── task_03.py
