@@ -2,10 +2,9 @@
 ***
 
 ## Homeworks
-
-### homework-1
-
-#### added tasks: <br>
+### added tasks: <br>
+- homework - 01 <br>
+- homework - 02 <br>
 
 ```commandline
 
@@ -16,6 +15,10 @@
 │       ├── task_03.py
 │       ├── task_04.py
 │       ├── task_05.py
+│   ├── hw_02/   
+│       ├── task_01.py
+│       ├── task_02.py
+
 ```
 
 ## Authors 👨‍💻
