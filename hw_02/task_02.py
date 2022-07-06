@@ -184,8 +184,8 @@ class TicTacToe:
     def _player_input(self):
         """Gets player's input string to choose the game mark to play."""
         player = ''
-        while player not in self.players_marks:
-            player = input('Please, choose your marker: X or 0: ').upper()
+        while player.upper() not in self.players_marks:
+            player = input('Please, choose your marker: X or 0: ')
             if player != 'X' or '0':
                 print('Error! Please, choose correct marker: X or 0')
         ai = '0' if player == 'X' else 'X'
@@ -270,15 +270,20 @@ class TicTacToe:
             try:
                 pos = input(f'Player "'
                             f'{player_mark}", your turn (for example, a10): ')
-                pos_char, pos_num = pos[0], pos[1:]
 
-                if (pos_char in self.board) \
-                        and (pos_num in self.board[pos_char]) \
-                        and (self._space_check(pos_char, pos_num)):
+                if pos:
+                    pos_char, pos_num = pos[0], pos[1:]
 
-                    return pos_char, pos_num
+                    if (pos_char in self.board) \
+                            and (pos_num in self.board[pos_char]) \
+                            and (self._space_check(pos_char, pos_num)):
+
+                        return pos_char, pos_num
+                    else:
+                        raise ValueError
                 else:
-                    raise ValueError
+                    print('Error value! Choose correct position (for example, a10):')
+
             except ValueError as exc:
                 print(f'Wrong value: {exc}. Please, try again.')
 
