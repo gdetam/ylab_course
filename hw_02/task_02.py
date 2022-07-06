@@ -186,7 +186,8 @@ class TicTacToe:
         player = ''
         while player not in self.players_marks:
             player = input('Please, choose your marker: X or 0: ').upper()
-
+            if player != 'X' or '0':
+                print('Error! Please, choose correct marker: X or 0')
         ai = '0' if player == 'X' else 'X'
         return player, ai
 
