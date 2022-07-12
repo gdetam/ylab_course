@@ -5,6 +5,7 @@
 ### added tasks: <br>
 - homework - 01 <br>
 - homework - 02 <br>
+- homework - 03 <br>
 
 ```commandline
 
@@ -18,6 +19,19 @@
 │   ├── hw_02/   
 │       ├── task_01.py
 │       ├── task_02.py
+│   ├── hw_03/   
+│       ├── solid_code/
+│           ├── __init__.py
+│           ├── heroes.py
+│           ├── main.py
+│           ├── news.py
+│           ├── places.py
+│           ├── save_place.py
+│           ├── weapon.py
+│       ├── task_01.py
+│       ├── task_02.py
+│       ├── task_03.py
+│       ├── task_04.py
 
 ```
 
