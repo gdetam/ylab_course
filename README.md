@@ -56,8 +56,8 @@
 │               ├── __init__.py
 │               ├── cache.py
 │               ├── db.py
-│               ├── redice_cache.py
-│               ├── redice_db.py
+│               ├── redis_cache.py
+│               ├── redis_db.py
 │           ├── migrations/
 │                   ├── versions/
 │                   ├── __init__.py
@@ -74,7 +74,6 @@
 │               ├── post.py
 │               ├── user.py
 │           ├── __init__.py
-│       ├── __init__.py
 │       ├── alembic.ini
 │       ├── docker-compose.yml
 │       ├── Dockerfile
@@ -83,7 +82,7 @@
 │       ├── requirements.txt
 
 ```
-
+***
 ## Authors 👨‍💻
 
 Contributors names and contact info
