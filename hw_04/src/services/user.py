@@ -9,12 +9,11 @@ from passlib.hash import pbkdf2_sha256
 from redis import Redis
 from sqlmodel import Session
 
-
 from src.db import AbstractCache, get_cache, get_session
 from src.db.redis_db import (
     get_active_refresh_token,
     get_blocked_access_token
-    )
+)
 from src.models.user import User
 from src.services import ServiceMixin
 from src.api.v1.schemas.auth import Login, Signup, Tokens
@@ -23,8 +22,7 @@ from src.core.config import (
     JWT_REFRESH_EXP_SECONDS,
     JWT_SECRET_KEY,
     JWT_ALGORITHM
-    )
-
+)
 
 security = HTTPBearer()
 
@@ -147,14 +145,15 @@ class UserService(ServiceMixin):
         while self.active_refresh_tokens.llen(str(user.id)) != 0:
             token_uuid = self.active_refresh_tokens.rpop(str(user.id))
 
+
 def get_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     return credentials.credentials
 
 
 def get_current_user(
-    token: str = Depends(get_token),
-    session: Session = Depends(get_session),
-    blocked_access_tokens: Redis = Depends(get_blocked_access_token),
+        token: str = Depends(get_token),
+        session: Session = Depends(get_session),
+        blocked_access_tokens: Redis = Depends(get_blocked_access_token),
 ):
     decode_token = jwt.decode(
         token,
@@ -174,10 +173,10 @@ def get_current_user(
 
 @lru_cache()
 def get_user_service(
-    cache: AbstractCache = Depends(get_cache),
-    session: Session = Depends(get_session),
-    blocked_access_tokens: Redis = Depends(get_blocked_access_token),
-    active_refresh_tokens: Redis = Depends(get_active_refresh_token),
+        cache: AbstractCache = Depends(get_cache),
+        session: Session = Depends(get_session),
+        blocked_access_tokens: Redis = Depends(get_blocked_access_token),
+        active_refresh_tokens: Redis = Depends(get_active_refresh_token),
 ) -> UserService:
     return UserService(
         cache=cache,
