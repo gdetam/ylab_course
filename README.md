@@ -82,7 +82,7 @@
 │       ├── requirements.txt
 
 ```
-***
+
 ## Authors 👨‍💻
 
 Contributors names and contact info
