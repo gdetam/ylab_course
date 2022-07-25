@@ -19,7 +19,7 @@ def get_user(
     return user
 
 
-@router.patch(
+@router.put(
     path="/me",
     response_model=UserModel,
     summary="Обновляет информацию о себе",

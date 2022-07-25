@@ -61,12 +61,11 @@ def refresh(
     tags=["auth"],
 )
 def logout(
-    logout_data: Logout,
     access_token: str = Depends(get_token),
     user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service),
 ):
-    user_service.logout(user, access_token, logout_data.refresh_token)
+    user_service.logout(user, access_token)
     return {'msg': 'You have been logged out.'}
 
 
