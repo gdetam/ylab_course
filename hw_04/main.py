@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from src.api.v1.resources import posts, users, auth
 from src.core import config
 from src.db import cache, redis_cache
+from src.models import post, user
 
 
 app = FastAPI(

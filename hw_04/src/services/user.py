@@ -30,13 +30,9 @@ security = HTTPBearer()
 
 
 class UserService(ServiceMixin):
-    def __init__(
-        self,
-        cache: AbstractCache,
-        session: Session,
-        blocked_access_tokens: Redis,
-        active_refresh_tokens: Redis,
-    ):
+    def __init__(self, cache: AbstractCache, session: Session, blocked_access_tokens: Redis,
+                 active_refresh_tokens: Redis):
+        super().__init__(cache, session)
         self.cache: AbstractCache = cache
         self.session: Session = session
         self.blocked_access_tokens = blocked_access_tokens
@@ -44,6 +40,7 @@ class UserService(ServiceMixin):
 
     def create_jwt(self, user):
         now = datetime.utcnow().timestamp()
+        refresh_token_id = str(uuid.uuid4())
         access_jwt = jwt.encode(
             {
                 "username": user.username,
@@ -51,12 +48,12 @@ class UserService(ServiceMixin):
                 "nbf": now,
                 "exp": now + JWT_ACCESS_EXP_SECONDS,
                 "jti": str(uuid.uuid4()),
+                "refresh_token_jti": refresh_token_id,
                 "sub": user.id,
             },
             JWT_SECRET_KEY,
             algorithm=JWT_ALGORITHM
         )
-        refresh_token_id = str(uuid.uuid4())
         refresh_jwt = jwt.encode(
             {
                 "iat": now,
@@ -128,30 +125,27 @@ class UserService(ServiceMixin):
         self.session.add(user)
         self.session.commit()
         self.session.refresh(user)
-        print(user)
         return user
 
-    def logout(self, user, access_token, refresh_token):
+    def logout(self, user, access_token):
         decode_access_token = jwt.decode(
             access_token,
             JWT_SECRET_KEY,
             algorithms=[JWT_ALGORITHM]
         )
-        decode_refresh_token = jwt.decode(
-            refresh_token,
-            JWT_SECRET_KEY,
-            algorithms=[JWT_ALGORITHM]
-        )
         self.blocked_access_tokens.set(decode_access_token.get('jti'), 1)
-        self.active_refresh_tokens.lrem(
-            str(user.id),
-            0,
-            decode_refresh_token.get('jti')
-        )
+        token_uuids = []
+        while self.active_refresh_tokens.llen(str(user.id)) != 0:
+            token_uuid = self.active_refresh_tokens.rpop(str(user.id))
+            if token_uuid != decode_access_token.get("refresh_token_jti"):
+                token_uuids.append(token_uuid)
+        if token_uuids:
+            for i in range(0, len(token_uuids)):
+                self.active_refresh_tokens.rpush(str(user.id), token_uuids[i])
 
     def logout_all(self, user):
-        self.active_refresh_tokens.delete(str(user.id))
-
+        while self.active_refresh_tokens.llen(str(user.id)) != 0:
+            token_uuid = self.active_refresh_tokens.rpop(str(user.id))
 
 def get_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     return credentials.credentials
