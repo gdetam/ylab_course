@@ -28,8 +28,12 @@ security = HTTPBearer()
 
 
 class UserService(ServiceMixin):
-    def __init__(self, cache: AbstractCache, session: Session, blocked_access_tokens: Redis,
+    def __init__(self,
+                 cache: AbstractCache,
+                 session: Session,
+                 blocked_access_tokens: Redis,
                  active_refresh_tokens: Redis):
+
         super().__init__(cache, session)
         self.cache: AbstractCache = cache
         self.session: Session = session
